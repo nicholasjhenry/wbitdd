@@ -41,6 +41,7 @@ describe "sale controller" do
     end
 
     def on_barcode(barcode)
+      # SMELL Should I get an empty barcode at all?
       if barcode.empty?
         @display.display_empty_bar_code_message
         return

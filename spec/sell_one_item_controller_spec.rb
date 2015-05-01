@@ -1,3 +1,5 @@
+require "price"
+
 describe "sale controller" do
   describe "selling one item" do
     specify "given the product is found" do
@@ -54,12 +56,6 @@ describe "sale controller" do
       else
         @display.display_price(price)
       end
-    end
-  end
-
-  class Price
-    def self.cents(cents_value)
-      new
     end
   end
 end

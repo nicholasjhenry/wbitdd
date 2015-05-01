@@ -19,7 +19,7 @@ describe "in-memory catalog" do
   end
 
   def catalog_without(barcode_to_avoid)
-    InMemoryCatalog.new({})
+    InMemoryCatalog.new("anything but #{barcode_to_avoid}" => Price.cents(0))
   end
 
   class InMemoryCatalog

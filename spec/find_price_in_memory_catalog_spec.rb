@@ -1,3 +1,4 @@
+require "spec_helper"
 require "price"
 
 describe "in-memory catalog" do

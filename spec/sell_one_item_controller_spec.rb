@@ -23,6 +23,15 @@ describe "sale controller" do
 
       expect(display).to have_received(:display_product_not_found_message).once.with(:product_not_found)
     end
+
+    specify "empty barcode" do
+      display = spy(:display)
+
+      sale_controller = SaleController.new(nil, display)
+      sale_controller.on_barcode("")
+
+      expect(display).to have_received(:display_empty_bar_code_message).once
+    end
   end
 
   class SaleController
@@ -32,6 +41,11 @@ describe "sale controller" do
     end
 
     def on_barcode(barcode)
+      if barcode.empty?
+        @display.display_empty_bar_code_message
+        return
+      end
+
       price = @catalog.find_price(barcode)
 
       if price.nil?

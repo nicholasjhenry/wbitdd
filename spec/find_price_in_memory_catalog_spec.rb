@@ -6,7 +6,11 @@ describe "in-memory catalog" do
   it_satisfies_contract_for "find price in catalog"
 
   def catalog_with(barcode, price)
-    InMemoryCatalog.new(barcode => price)
+    InMemoryCatalog.new(
+      "definitely not #{barcode}" => Price.cents(0),
+      barcode => price,
+      "once again, definitely not #{barcode}" => Price.cents(1000000)
+    )
   end
 
   def catalog_without(barcode_to_avoid)

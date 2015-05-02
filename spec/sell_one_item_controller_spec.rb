@@ -3,7 +3,7 @@ require "price"
 
 describe "sale controller" do
   describe "selling one item" do
-    specify "given the product is found" do
+    specify "product is found" do
       catalog = double(:catalog)
       display = spy(:display)
       irrelevant_price = Price.cents(795)

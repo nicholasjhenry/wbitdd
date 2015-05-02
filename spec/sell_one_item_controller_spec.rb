@@ -1,14 +1,13 @@
 require "spec_helper"
+require "find_price_in_catalog_contract"
 require "price"
 
 describe "sale controller" do
   describe "selling one item" do
     specify "product is found" do
-      catalog = double(:catalog)
       display = spy(:display)
       irrelevant_price = Price.cents(795)
-
-      allow(catalog).to receive(:find_price).with("::product found::").and_return(irrelevant_price)
+      catalog = catalog_with("::product found::", irrelevant_price)
 
       sale_controller = SaleController.new(catalog, display)
       sale_controller.on_barcode("::product found::")
@@ -17,9 +16,8 @@ describe "sale controller" do
     end
 
     specify "product not found" do
-      catalog = double(:catalog)
       display = spy(:display)
-      allow(catalog).to receive(:find_price).with("::product not found::").and_return(nil)
+      catalog = catalog_without("::product not found::")
 
       sale_controller = SaleController.new(catalog, display)
       sale_controller.on_barcode("::product not found::")
@@ -35,6 +33,22 @@ describe "sale controller" do
 
       expect(display).to have_received(:display_empty_bar_code_message).once
     end
+  end
+
+  describe "verifying contract for catalog" do
+    it_satisfies_contract_for "find price in catalog"
+  end
+
+  def catalog_with(barcode, price)
+    catalog = double(:catalog)
+    allow(catalog).to receive(:find_price).with(barcode).and_return(price)
+    catalog
+  end
+
+  def catalog_without(barcode_to_avoid)
+    catalog = double(:catalog)
+    allow(catalog).to receive(:find_price).with(barcode_to_avoid).and_return(nil)
+    catalog
   end
 
   class SaleController

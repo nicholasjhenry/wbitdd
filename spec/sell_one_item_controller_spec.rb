@@ -8,7 +8,7 @@ describe "sale controller" do
       display = spy(:display)
       irrelevant_price = Price.cents(795)
 
-      allow(catalog).to receive(:find_price).with("::product found::").and_return(irrelevant_price)
+      allow(catalog).to receive(:fetch_price).with("::product found::").and_return(irrelevant_price)
 
       sale_controller = SaleController.new(catalog, display)
       sale_controller.on_barcode("::product found::")
@@ -19,7 +19,7 @@ describe "sale controller" do
     specify "product not found" do
       catalog = double(:catalog)
       display = spy(:display)
-      allow(catalog).to receive(:find_price).with("::product not found::").and_return(nil)
+      allow(catalog).to receive(:fetch_price).with("::product not found::").and_return(nil)
 
       sale_controller = SaleController.new(catalog, display)
       sale_controller.on_barcode("::product not found::")
@@ -50,7 +50,7 @@ describe "sale controller" do
         return
       end
 
-      price = @catalog.find_price(barcode)
+      price = @catalog.fetch_price(barcode)
 
       if price.nil?
         @display.display_product_not_found_message(barcode)
